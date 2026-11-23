@@ -291,6 +291,22 @@ class OpenAiServer(
             resultListener = { text, done, thought ->
                 runBlocking {
                     if (done) {
+                        // OpenAI-compatible streams must emit a terminal chunk with
+                        // finish_reason before [DONE]; clients like OpenCode reject
+                        // a stream that ends without one.
+                        val terminal = ChatCompletionChunk(
+                            id = id,
+                            created = created,
+                            model = model.name,
+                            choices = listOf(
+                                ChatChunkChoice(
+                                    index = 0,
+                                    delta = ChatDelta(),
+                                    finish_reason = "stop"
+                                )
+                            )
+                        )
+                        writer.writeStringUtf8("data: ${Json.encodeToString(terminal)}\n\n")
                         writer.writeStringUtf8("data: [DONE]\n\n")
                         writer.flush()
                         completer.complete(Unit)
@@ -338,6 +354,19 @@ class OpenAiServer(
             resultListener = { text, done, thought ->
                 runBlocking {
                     if (done) {
+                        val terminal = CompletionChunk(
+                            id = id,
+                            created = created,
+                            model = model.name,
+                            choices = listOf(
+                                CompletionChunkChoice(
+                                    index = 0,
+                                    text = "",
+                                    finish_reason = "stop"
+                                )
+                            )
+                        )
+                        writer.writeStringUtf8("data: ${Json.encodeToString(terminal)}\n\n")
                         writer.writeStringUtf8("data: [DONE]\n\n")
                         writer.flush()
                         completer.complete(Unit)
