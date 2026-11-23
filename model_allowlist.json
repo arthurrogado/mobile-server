@@ -14,9 +14,14 @@
         "topP": 0.95,
         "temperature": 1.0,
         "maxTokens": 16384,
-        "accelerators": "cpu,gpu"
+        "accelerators": "cpu,gpu",
+        "maxContextLength": 32000
       },
-      "taskTypes": ["llm_chat", "llm_prompt_lab", "llm_ask_image"]
+      "taskTypes": [
+        "llm_chat",
+        "llm_prompt_lab",
+        "llm_ask_image"
+      ]
     },
     {
       "name": "Gemma-3n-E4B-it-int4",
@@ -32,9 +37,14 @@
         "topP": 0.95,
         "temperature": 1.0,
         "maxTokens": 16384,
-        "accelerators": "cpu,gpu"
+        "accelerators": "cpu,gpu",
+        "maxContextLength": 32000
       },
-      "taskTypes": ["llm_chat", "llm_prompt_lab", "llm_ask_image"]
+      "taskTypes": [
+        "llm_chat",
+        "llm_prompt_lab",
+        "llm_ask_image"
+      ]
     },
     {
       "name": "Gemma3-1B-IT q4",
@@ -49,9 +59,13 @@
         "topP": 0.95,
         "temperature": 1.0,
         "maxTokens": 16384,
-        "accelerators": "gpu,cpu"
+        "accelerators": "gpu,cpu",
+        "maxContextLength": 32000
       },
-      "taskTypes": ["llm_chat", "llm_prompt_lab"]
+      "taskTypes": [
+        "llm_chat",
+        "llm_prompt_lab"
+      ]
     },
     {
       "name": "Qwen2.5-1.5B-Instruct q8",
@@ -66,9 +80,13 @@
         "topP": 0.95,
         "temperature": 1.0,
         "maxTokens": 16384,
-        "accelerators": "cpu"
+        "accelerators": "cpu",
+        "maxContextLength": 32000
       },
-      "taskTypes": ["llm_chat", "llm_prompt_lab"]
+      "taskTypes": [
+        "llm_chat",
+        "llm_prompt_lab"
+      ]
     }
   ]
 }
