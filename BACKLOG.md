@@ -21,3 +21,9 @@
 - Não root no celular; GPU via NNAPI/GPU delegate nativo do Google (llama.cpp/OpenCL no Termux é bloqueado por SELinux no Android 16).
 - Build: GitHub Actions (`.github/workflows/build_android.yaml`) + `gh` com escopo `workflow` + `actions/upload-artifact@v4`.
 - Instalação: ADB wireless (`adb pair` + `adb connect`).
+
+## Descobertas da sessão (continuação)
+- [ ] **Estabilidade do servidor em background**: o app descarrega o modelo e para o servidor quando sai de foreground ou quando a conexão ADB/Wi-Fi oscila. `ModelKeepAliveService` e `OpenAiServerService` aparecem como `isForeground=true` no dumpsys, mas a porta 8080 deixa de escutar. Investigar: (a) o servidor só sobe se o modelo estiver carregado? (b) o `model.instância` é perdido ao trocar de aba? (c) adicionar reconexão automática do servidor quando o modelo for recarregado.
+- [ ] **Wake lock**:desabilitei o screen-off timeout via ADB (`settings put system screen_off_timeout 2147483647`), mas isso não impediu a queda. O Termux SSH também caiu (`NoValidConnectionsError`). Considerar `termux-wake-lock` via SSH estável ou Pedra/party.
+- [ ] **ADB wireless instability**: o IP de pareamento `100.95.134.90:37017` caiu (`connection refused`) após ~30 min. O IP da Wi-Fi é `192.168.15.7`. Reconectar via `adb pair` se necessário.
+- [x] Context 16384 no allowlist + slider (2000–32000) com input numérico + reinicialização automática do engine ao mudar (já implementado no fork).
