@@ -330,7 +330,7 @@ class OpenAiServer(
             cleanUpListener = {},
             onError = { 
                 runBlocking {
-                    writer.writeStringUtf8("data: {\"error\": \"$it\"}\n\n")
+                    writer.writeStringUtf8("data: {\"error\": {\"message\": \"$it\"}}\n\n")
                     writer.writeStringUtf8("data: [DONE]\n\n")
                     writer.flush()
                 }
@@ -390,7 +390,7 @@ class OpenAiServer(
             cleanUpListener = {},
             onError = { 
                 runBlocking {
-                    writer.writeStringUtf8("data: {\"error\": \"$it\"}\n\n")
+                    writer.writeStringUtf8("data: {\"error\": {\"message\": \"$it\"}}\n\n")
                     writer.writeStringUtf8("data: [DONE]\n\n")
                     writer.flush()
                 }

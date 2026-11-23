@@ -113,7 +113,7 @@ object LlmChatModelHelper : LlmModelHelper {
         backend = preferredBackend,
         visionBackend = if (shouldEnableImage) visionBackend else null, // must be GPU for Gemma 3n
         audioBackend = if (shouldEnableAudio) Backend.CPU() else null, // must be CPU for Gemma 3n
-        maxNumTokens = maxOf(maxTokens, 8192),
+        maxNumTokens = maxOf(maxTokens, 16384),
         cacheDir =
           if (modelPath.startsWith("/data/local/tmp"))
             context.getExternalFilesDir(null)?.absolutePath
