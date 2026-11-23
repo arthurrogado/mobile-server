@@ -109,10 +109,10 @@ class OpenAiServer(
 
         val mutex = modelMutexes.getOrPut(model.name) { Mutex() }
         
-        if (mutex.isLocked) {
-            call.respond(HttpStatusCode.TooManyRequests, mapOf("error" to "Model is busy"))
-            return
-        }
+        // Do not reject concurrent requests with 429. Coding agents (e.g. OpenCode)
+        // fire a title-generation request alongside the main completion; a JSON
+        // {"error": "..."} body is not a valid stream event and breaks the client.
+        // Serialize instead: withLock queues naturally until the model is free.
 
         mutex.withLock {
             // Apply parameters
@@ -206,10 +206,10 @@ class OpenAiServer(
 
         val mutex = modelMutexes.getOrPut(model.name) { Mutex() }
         
-        if (mutex.isLocked) {
-            call.respond(HttpStatusCode.TooManyRequests, mapOf("error" to "Model is busy"))
-            return
-        }
+        // Do not reject concurrent requests with 429. Coding agents (e.g. OpenCode)
+        // fire a title-generation request alongside the main completion; a JSON
+        // {"error": "..."} body is not a valid stream event and breaks the client.
+        // Serialize instead: withLock queues naturally until the model is free.
 
         mutex.withLock {
             request.temperature?.let { model.configValues = model.configValues + (ConfigKeys.TEMPERATURE.label to it) }
